@@ -1,11 +1,14 @@
 
 wait()
+wait musi być zawołane wewnątrz synchronized. Synchronized nakłada lock na obiekcie. Kiedy lock jest nałożony tylko nasz thread ma dostęp do obiektu. jak zawołamy wait() to nasz thread się
+zatrzymuje i inne thready mogą zacząć coś działać na obiekcie.
 The wait() method causes the current thread to wait indefinitely until another thread either invokes notify() for this object or notifyAll().
 wait(long timeout)
 Using this method, we can specify a timeout after which thread will be woken up automatically. A thread can be woken up before reaching the timeout using notify() or notifyAll().
 Note that calling wait(0) is the same as calling wait().
 
-notify()
+notify
+musi być wewnątrz bloku synchronized wątku A, zwalnia z inny thread B z wait (który to będzie thread to wie tylko scheduler), ale thread B musi zaczekać aż thread A zwolni lock.
 For all threads waiting on this object's monitor (by using any one of the wait() method), the method notify() notifies ANY ONE OF THEM to wake up arbitrarily. The choice of exactly which thread to wake is non-deterministic and depends upon the implementation.
 Since notify() wakes up a single random thread it can be used to implement mutually exclusive locking where threads are doing similar tasks, but in most cases, it would be more viable to implement notifyAll().
 

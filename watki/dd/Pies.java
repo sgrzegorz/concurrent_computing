@@ -25,6 +25,13 @@ public class Pies {
         t.start();
 
         try{
+            wait();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+
+        try{
             t1.join();
             t.join();
         }catch(InterruptedException e){
