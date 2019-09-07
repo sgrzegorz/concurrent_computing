@@ -4,44 +4,44 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Processor1 {
-    private LinkedList <Integer> list = new LinkedList<Integer>();
-    private final int LIMIT=0;
+    private final int LIMIT = 10;
+    private LinkedList<Integer> list = new LinkedList<Integer>();
     private Object lock = new Object();
 
-    public void produce() throws InterruptedException{
+    public void produce() throws InterruptedException {
         int value = 0;
 
-        while(true){
-            synchronized (lock){
-                while(list.size() == LIMIT){
+
+        while (true) {
+            synchronized (lock) {
+                while (list.size() == LIMIT) {
                     lock.wait();
                 }
 
                 list.add(value++);
                 lock.notify();
             }
+
         }
     }
 
-    public void consume() throws InterruptedException{
+    public void consume() throws InterruptedException {
         Random random = new Random();
 
-        while(true){
+        while (true) {
 
-            synchronized (lock){
-                System.out.println("List size is" + list.size());
-                while(list.size() == 0){
+            synchronized (lock) {
+                while (list.size() == 0) {
                     lock.wait();
                 }
+                System.out.println("List size is" + list.size());
                 int value = list.removeFirst();
-                System.out.println(";value is "+ value);
+                System.out.println(";value is " + value);
                 lock.notify();
             }
-
-            Thread.sleep(random.nextInt());
+            Thread.sleep(300);
         }
     }
-
 
 
 }
