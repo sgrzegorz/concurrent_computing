@@ -26,14 +26,18 @@ class Runner1 implements Runnable{
     }
 }
 
-public class StartingThreads{
+public class WaysOfStartingThreads{
     public static void main(String [] args){
+
+        //sposób 1
         Runner runner = new Runner();
         runner.start();
 
+        //sposób 2
         Runner1 runner1 = new Runner1();
         runner1.run();
 
+        //sposób 3
         Thread runner2 = new Thread(new Runnable() {
             @Override
             public void run() {

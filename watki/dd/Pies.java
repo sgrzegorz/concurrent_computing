@@ -24,11 +24,11 @@ public class Pies {
         t1.start();
         t.start();
 
-        try{
-            wait();
-        }catch(InterruptedException e){
-            e.printStackTrace();
-        }
+//        try{
+//            wait();
+//        }catch(InterruptedException e){
+//            e.printStackTrace();
+//        }
 
 
         try{

@@ -1,7 +1,5 @@
 package reentrant_lock;
 
-import synchronized_wait.Processor1;
-
 public class App {
     public static void main(String [] args) throws InterruptedException{
         final Runner runner = new Runner();
