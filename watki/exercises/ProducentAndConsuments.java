@@ -1,19 +1,32 @@
 import java.util.ArrayList;
 
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+
 class Buffer{
-    ArrayList list = new ArrayList();
+    ArrayList <String> list = new ArrayList();
+    private static final int MAX_QUEUE =10;
 
-
-    void take(){
-        list.get(list.size());
+    String take(){
+        System.out.println(list.size());
+        if(list.size() ==0){
+            throw new EmptyStackException();
+        }
+        String val = list.get(list.size()-1);
+        list.remove(list.size()-1);
+        return val;
     }
 
-    void put(int val){
+    void put(String val){
+        if(list.size()-1 == MAX_QUEUE){
+            throw new IllegalStateException();
+        }
         list.add(val);
 
     }
 
 }
+
 
 
 
@@ -26,7 +39,7 @@ class Consumer implements Runnable {
 
     public void run() {
 
-        for(int i = 0;  i < ILOSC;   i++) {
+        for(int i = 0;  i < 10000;   i++) {
             String message = buffer.take();
         }
 
@@ -43,7 +56,7 @@ class Producer implements Runnable {
 
     public void run() {
 
-        for(int i = 0;  i < ILOSC;   i++) {
+        for(int i = 0;  i < 10000;   i++) {
             buffer.put("message "+i);
         }
 
@@ -55,6 +68,6 @@ class Producer implements Runnable {
 public class ProducentAndConsuments {
     public static void main(String [] args){
         Buffer buffer = new Buffer();
-        Buffer.put(1);
+        buffer.put("1");
     }
 }
