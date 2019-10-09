@@ -3,18 +3,20 @@ import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
+import static java.lang.Thread.sleep;
+
 class Buffer{
     private final int MAX_QUEUE =10;
     String array[] = new String[MAX_QUEUE];
     int index=0;
 
 
-
     synchronized void  produce(String val) throws InterruptedException {
         while(index == MAX_QUEUE-1){
             wait();
         }
-        System.out.println("Producer "+ Thread.currentThread().getName() + " produces <" + val + ">");
+        sleep(4);
+        System.out.println("Producer "+ Thread.currentThread().getName() + " produces <message" + val + ">");
         index++;
         array[index]=val;
         notifyAll();
@@ -25,6 +27,7 @@ class Buffer{
         while(index ==0){
             wait();
         }
+        sleep(4);
         String val = array[index];
         index--;
         System.out.println("Consumer " + Thread.currentThread().getName()+ " consumes <" + val + ">");
@@ -39,7 +42,7 @@ class Buffer{
 
 
 
-class Consumer implements Runnable {
+class Consumer extends Thread {
     private Buffer buffer;
 
     public Consumer(Buffer buffer) {
@@ -61,7 +64,8 @@ class Consumer implements Runnable {
 }
 
 
-class Producer implements Runnable {
+class Producer extends Thread {
+    static synchronized long message_id=0;
     private Buffer buffer;
 
     public Producer(Buffer buffer) {
@@ -95,8 +99,7 @@ public class ProducerAndConsuments {
 
         for (Producer p : producents){
             p = new Producer(buffer);
-            System.out.println("heeeee");
-            p.run();
+            p.start();
         }
 
         for (Consumer c : consumers){
