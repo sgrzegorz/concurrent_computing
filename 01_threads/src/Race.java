@@ -3,12 +3,12 @@ import static java.lang.Thread.sleep;
 class Counter {
     int val =0;
 
-    synchronized void add(){
-        val ++;
+       synchronized void add(){
+        this.val ++;
     }
 
-    synchronized void sub(){
-        val --;
+       synchronized void sub(){
+        this.val --;
     }
 }
 
@@ -17,7 +17,7 @@ class Counter {
 
 public class Race{
     public static void main(String []args) throws InterruptedException {
-        int N = 100000;
+        int N = 200000000;
         Counter c = new Counter();
 
         Thread thread1 = new Thread(new Runnable() {
@@ -26,7 +26,7 @@ public class Race{
                 for(int i=0;i<N;i++){
                     c.add();
                 }
-                System.out.println("add koncze prace");
+//                System.out.println("add koncze prace");
             }
         });
 
@@ -36,15 +36,18 @@ public class Race{
                 for(int i=0;i<N;i++){
                     c.sub();
                 }
-                System.out.println("sub koncze prace");
+//                System.out.println("sub koncze prace");
             }
         });
 
         thread1.start();
         thread2.start();
 
+        thread1.join();
+        thread2.join();
 
-        Thread.sleep(4000);
+
+//        Thread.sleep(4000);
         System.out.println(c.val);
     }
 

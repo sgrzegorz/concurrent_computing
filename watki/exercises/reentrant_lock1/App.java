@@ -1,4 +1,4 @@
-package reentrant_lock;
+package reentrant_lock1;
 
 public class App {
     public static void main(String [] args) throws InterruptedException{

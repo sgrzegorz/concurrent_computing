@@ -67,5 +67,5 @@ B:
 1. B automatycznie throw new InterruptedException() (dlatego np. instrukcja wait jest wewnątrz try{}catch(){}
 2. B kontynuuje swoje działanie
 =================================================================================
-
+VOLATILE    - prevent threads from caching variables when they are not chnged from that thread.
 
