@@ -16,7 +16,7 @@ class Buffer{
     public static final String ANSI_RESET = "\u001B[0m";
 
 
-    private final int MAX_QUEUE =10000;
+    private final int MAX_QUEUE =10;
     String array[] = new String[MAX_QUEUE];
     int index=0;
 

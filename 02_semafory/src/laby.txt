@@ -1,0 +1,21 @@
+w javie w jezyku są wbudowane monitowy
+
+semafory są niższego poziomu. W javie trzeba napisać klasę obslugująca semafory. Semafor
+to zmienna licznikowa. zmienna a. Można V podnosić i P opuszczać.
+semafor binarny 0, 1 wartości. jeżeli opuszczony to waartośc 0.
+Podnoszenie podwyższamy wartość i powiadamiamy procesy/wątki że semafor został zmieniony.
+
+semafor licznikowy, np 0,1,2,3,4,5 może więcej procesów w jednym momencie.
+
+sekcja krytyczna -
+ 1. przed wejściem opuścić semafor P
+ 2.
+ 3. wychodząc V podnosimy semafor.
+
+ semafor binarny nie jest semaforme licznikowym 0,1.
+ semafor binarny: V V powinno się zgłosić bład. Semafor licznikowy można podnieść.
+
+
+ Wersje semaforów;
+ semafor dwustronnnie ograniczony np nie można go podnieść bardziej niż 5
+ semafor uogólniony
