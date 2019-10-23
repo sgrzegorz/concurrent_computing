@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Osoba extends Thread{
     Kelner kelner;
-    int id_pary;
+    public int id_pary;
 
 
     Osoba(Kelner kelner,int id_pary){
@@ -45,7 +45,4 @@ public class Osoba extends Thread{
 
     }
 
-    public int getIdPary() {
-        return id_pary;
-    }
 }

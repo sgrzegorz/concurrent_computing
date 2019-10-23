@@ -73,7 +73,7 @@ VOLATILE    - prevent threads from caching variables when they are not chnged fr
 ==================================================================================
 ==================================================================================
 ==================================================================================
-Lock lock = new ReentrantLock()
+Lock lock = new ReentrantLock()    https://www.youtube.com/watch?v=ahBC69_iyk4 fair lock - wtedy jest kolejka ten co najdluzej czeka bedzie pierszy
 Condition cond = lock.newCondition();
 
 T1:
@@ -86,6 +86,9 @@ T2:
 T3:
     cond.signal() //zwalniam z czekania TYLKO jeden wątek T1 lub T2, zeby zwolnić oba trzeba wywołać 2 razy
 
+
+Lock lock = new ReentrantLock(true)  fair lock - wątek który najdłużej czeka wchodzi pierwszy
+Lock lock = new ReentrantLock()   <=> Lock lock = new ReentrantLock(false)  unfair lock. Może zagłodzić wątek
 void signal() Wakes up one waiting thread.
 If any threads are waiting on this condition then one is selected for waking up. That thread must then re-acquire the lock before returning from await.
 re-acquire the lock - znaczy się że tyle razy ile został wykonane lock.lock() tyle razy musi zostać wykonane lock.unlock() dopiero wtedy wątek return from await .
