@@ -28,11 +28,9 @@ class Watek extends Thread {
         for(;;) {
             String zadanieDoWydruku = utworzZadanieDoWydruku();
 
-            Random random = new Random();
-            int i = random.nextInt(md.getM());
-            Drukarka drukarka =md.zarezerwuj(i);
+            Drukarka drukarka =md.zarezerwuj();
             drukarka.drukuj(zadanieDoWydruku);
-            md.zwolnij(i);
+            md.zwolnij();
 
             try {
                 Thread.sleep(300);

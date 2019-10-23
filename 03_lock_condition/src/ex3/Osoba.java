@@ -4,8 +4,12 @@ import java.util.Random;
 
 public class Osoba extends Thread{
     Kelner kelner;
-    Osoba(Kelner kelner){
+    int id_pary;
+
+
+    Osoba(Kelner kelner,int id_pary){
         this.kelner = kelner;
+        this.id_pary = id_pary;
     }
 
     void wlasneSprawy(){
@@ -33,20 +37,13 @@ public class Osoba extends Thread{
 
         for(;;) {
             wlasneSprawy();
-            kelner.chceStolik();
+            kelner.chceStolik(this, id_pary);
             jedzenie();
-            kelner.zwalniam();
+            kelner.zwalniam(this, id_pary);
 
         }
 
     }
 
 
-
-    forever{
-        wlasne sprawy;
-        Kelner.chce_stolik(j);
-        jedzenie;
-        Kelner.zwalniam();
-    }
 }

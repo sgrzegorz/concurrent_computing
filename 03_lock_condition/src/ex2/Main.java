@@ -11,8 +11,16 @@ public class Main {
 
 
     public static void main(String[] args) throws InterruptedException {
-        MonitorDrukarek md = new MonitorDrukarek(3);
+        int nDrukarek=3;
+        Drukarka drukarki[]=new Drukarka[nDrukarek];
+        for(int i=0;i<nDrukarek;i++){
+            drukarki[i]= new Drukarka(i);
+        }
+
+        MonitorDrukarek md = new MonitorDrukarek(drukarki);
         Thread.sleep(100);
+
+
         for(int i=0;i<10;i++){
             Watek w = new Watek(md);
             w.start();

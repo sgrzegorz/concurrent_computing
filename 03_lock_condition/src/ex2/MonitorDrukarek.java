@@ -6,37 +6,57 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MonitorDrukarek {
 
-    private int M;
+
     private Drukarka[] drukarki;
-    private Lock[] locks;
-//    Condition conds[] = new
+    private boolean used[];
+    int nFreeDrukarki;
 
-    MonitorDrukarek(int M) {
-        this.M = M;
-        drukarki = new Drukarka[M];
-        locks = new ReentrantLock[M];
+    private Lock lock=new ReentrantLock();
+    private Condition noAvailable = lock.newCondition();
 
-        for (int i = 0; i < M; i++) {
-            locks[i] = new ReentrantLock();
-            drukarki[i] = new Drukarka(i);
+    MonitorDrukarek(Drukarka []drukarki) {
+
+        this.drukarki =drukarki;
+
+        used = new boolean[drukarki.length];
+        for(int i=0;i<drukarki.length;i++){
+            used[i] =false;
         }
+        nFreeDrukarki =drukarki.length;
     }
 
-    public Drukarka zarezerwuj(int i) {
-        locks[i].lock();
-        System.out.println(Thread.currentThread().getName() + " drukarka nr:"+ i +" rezerwuje");
-
-        return drukarki[i];
+    private Drukarka getFreeDrukarka(){
+        for(int i=0;i<drukarki.length;i++){
+            if(!used[i]){
+                nFreeDrukarki --;
+                return drukarki[i];
+            }
+        }
+        return null;
     }
 
-    public void zwolnij(int i) {
-        System.out.println(Thread.currentThread().getName() + "drukarka nr:"+ i +" zwalniam");
-        locks[i].unlock();
+
+    public Drukarka zarezerwuj() {
+        lock.lock();
+
+        Drukarka drukarka=getFreeDrukarka();
+        while(drukarka==null){
+            try { noAvailable.await(); } catch (InterruptedException e) { e.printStackTrace(); }
+            drukarka =getFreeDrukarka();
+        }
+        System.out.println(Thread.currentThread().getName() + " drukarka rezerwuje");
+
+        return drukarka;
+
     }
 
-    public int getM() {
-        return M;
+    public void zwolnij() {
+        System.out.println(Thread.currentThread().getName() + "drukarka  zwalniam");
+        nFreeDrukarki++;
+        noAvailable.signal();
+        lock.unlock();
     }
+
 
 
 

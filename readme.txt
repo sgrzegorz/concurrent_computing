@@ -69,3 +69,24 @@ B:
 =================================================================================
 VOLATILE    - prevent threads from caching variables when they are not chnged from that thread.
 
+==================================================================================
+==================================================================================
+==================================================================================
+==================================================================================
+Lock lock = new ReentrantLock()
+Condition cond = lock.newCondition();
+
+T1:
+    cond.await()
+
+T2:
+    cond.await()
+
+
+T3:
+    cond.signal() //zwalniam z czekania TYLKO jeden wątek T1 lub T2, zeby zwolnić oba trzeba wywołać 2 razy
+
+void signal() Wakes up one waiting thread.
+If any threads are waiting on this condition then one is selected for waking up. That thread must then re-acquire the lock before returning from await.
+re-acquire the lock - znaczy się że tyle razy ile został wykonane lock.lock() tyle razy musi zostać wykonane lock.unlock() dopiero wtedy wątek return from await .
+==========================================================================================================
