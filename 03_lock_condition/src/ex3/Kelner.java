@@ -5,53 +5,51 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Kelner {
-    Lock lock1 =new ReentrantLock();
+    Lock lock =new ReentrantLock();
+    Condition cond1 = lock.newCondition();
+    Condition cond [];
     Osoba osoby[];
-    Condition cond = lock.newCondition();
+    int obecni[];
+
+    Lock stolik = new ReentrantLock();
 
 
-    Lock lock = new ReentrantLock();
-    int id_pary=-1;
-
-    Condition cond1 = lock1.newCondition();
-    Condition condA = lock1.newCondition();
-    Condition condB = lock1.newCondition();
-    Condition cond = lock.newCondition();
-
-    int flag
-
-    public void setOsoby(Osoba []o){
+    public void configure(int npairs,Osoba []osoby){
         this.osoby = osoby;
+        cond = new Condition[npairs];
+        for(int i=0;i<npairs;i++) cond[i] = lock.newCondition();
+
+        obecni = new int[npairs];
+        for(int i=0;i<npairs;i++) obecni[i] =0;
+
     }
 
 
-    public void chceStolik(Osoba o,int id_pary){
+    public void chceStolik(Osoba o){
+        int id_pary = o.getIdPary();
 
         lock.lock();
-        this.id_pary = id_pary;
-        while(this.id_pary!=id_pary){
+        cond1.await();
 
-            try { cond.await(); } catch (InterruptedException e) { e.printStackTrace(); }
+        obecni[id_pary]++;
+        while(obecni[id_pary] == 1 ){
+
+            try { cond[o.id_pary].await(); } catch (InterruptedException e) { e.printStackTrace(); }
         }
-        this.id_pary = id_pary;
 
-        cond.signal();
+
+        cond[id_pary].signal();
+        stolik.lock();
         lock.unlock();
 
 
-        lock1.lock();
-
-
-        cond1.await();
-        cond1.signal();
-
 
 
 
     }
 
-    public void zwalniam(Osoba o,int id_pary){
-        cond1.signal();
-        lock1.unlock();
+    public void zwalniam(Osoba o){
+        obecni[o.getIdPary()]--;
+        if(obecni[o.getIdPary()]==0) stolik.unlock();
     }
 }

@@ -45,5 +45,7 @@ public class Osoba extends Thread{
 
     }
 
-
+    public int getIdPary() {
+        return id_pary;
+    }
 }
