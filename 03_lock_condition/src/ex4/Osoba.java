@@ -1,4 +1,4 @@
-package ex3;
+package ex4;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ public class Osoba extends Thread{
     public int id_pary;
 
 
-    Osoba(Kelner kelner,int id_pary){
+    Osoba(Kelner kelner, int id_pary){
         this.kelner = kelner;
         this.id_pary = id_pary;
     }
