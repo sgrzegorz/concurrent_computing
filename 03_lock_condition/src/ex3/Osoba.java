@@ -37,9 +37,9 @@ public class Osoba extends Thread{
 
         for(;;) {
             wlasneSprawy();
-            kelner.chceStolik(this, id_pary);
+            kelner.chceStolik(this);
             jedzenie();
-            kelner.zwalniam(this, id_pary);
+            kelner.zwalniam(this);
 
         }
 

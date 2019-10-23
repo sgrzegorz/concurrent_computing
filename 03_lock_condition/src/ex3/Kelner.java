@@ -6,12 +6,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Kelner {
     Lock lock =new ReentrantLock();
-    Condition cond1 = lock.newCondition();
     Condition cond [];
     Osoba osoby[];
     int obecni[];
-
-    Lock stolik = new ReentrantLock();
+    boolean flag =false;
+    Condition cond2 = lock.newCondition();
+    int przy_stoliku = 2;
 
 
     public void configure(int npairs,Osoba []osoby){
@@ -25,31 +25,38 @@ public class Kelner {
     }
 
 
-    public void chceStolik(Osoba o){
+    public void chceStolik(Osoba o)  {
         int id_pary = o.getIdPary();
 
         lock.lock();
-        cond1.await();
-
-        obecni[id_pary]++;
-        while(obecni[id_pary] == 1 ){
-
-            try { cond[o.id_pary].await(); } catch (InterruptedException e) { e.printStackTrace(); }
+        while(flag){
+            try { cond2.await(); } catch (InterruptedException e) { e.printStackTrace(); }
         }
 
+        obecni[id_pary]++;
+        while(obecni[id_pary] == 2 ){
+            try { cond[o.id_pary].await(); } catch (InterruptedException e) { e.printStackTrace(); }
+        }
+        flag = true; //jak thread jest tutaj to jego partner stoi w kolejce 2 linijki wyżej
 
         cond[id_pary].signal();
-        stolik.lock();
+
         lock.unlock();
-
-
-
-
+        System.out.println(Thread.currentThread().getName() + " siadam przy stoliku");
 
     }
 
+
     public void zwalniam(Osoba o){
-        obecni[o.getIdPary()]--;
-        if(obecni[o.getIdPary()]==0) stolik.unlock();
+        przy_stoliku--;
+        if(przy_stoliku==0){
+            //posprzataj
+            obecni[o.getIdPary()] =0;
+            przy_stoliku=2;
+            flag=false;
+            cond2.signalAll();
+        }
+        System.out.println(Thread.currentThread().getName() + " opuszczam stolik");
+
     }
 }
