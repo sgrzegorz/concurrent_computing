@@ -35,9 +35,9 @@ public class Consumer extends Thread {
     Consumer getPrevious()  {
         int i = getMyId();
         int k = (i-1>=0) ? (i-1)% Consumer.N : i-1+ Consumer.N;
-        System.out.println(i + " prev " + k);
+//        System.out.println(i + " prev " + k);
 
-        return  pool[(i-1>=0) ? (i-1)% Consumer.N : i-1+ Consumer.N];
+        return  pool[k];
 
     }
 
@@ -53,15 +53,14 @@ public class Consumer extends Thread {
 
 
     static void initialiseThreads(int N, Buffer buf){
-
+        if(N >= buf.size) throw new Error("Max number of threads must be smaller than buff size ");
         Consumer.N =N;
         pool = new Consumer[N];
         for(int i=0;i<N;i++){
             pool[i] =new Consumer(buf);
-            pool[i].semaphore= new Semaphore(0);
+            pool[i].semaphore= new Semaphore(-1);
         }
-        pool[0].semaphore = new Semaphore(buf.size);
-        try { pool[0].semaphore.acquire(); } catch (InterruptedException e) { e.printStackTrace(); }
+        pool[0].semaphore = new Semaphore(buf.size-1);
     }
 
 
