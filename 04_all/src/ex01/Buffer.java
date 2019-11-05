@@ -1,4 +1,4 @@
-package ex11;
+package ex01;
 
 public class Buffer {
     int size;
