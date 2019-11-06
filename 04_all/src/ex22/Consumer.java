@@ -1,6 +1,6 @@
 package ex22;
 
-import ex21.Buffer;
+
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ class Consumer extends Thread {
 
     public void run() {
 
-        for(int i = 0;  i < 10000;   i++) {
+        for(;;) {
             try {
                 buffer.consume(randomNumber());
             } catch (InterruptedException e) {

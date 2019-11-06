@@ -9,51 +9,65 @@ class Buffer{
     public static final String ANSI_BLUE_BACKGROUND = "\u001B[42m";
     public static final String ANSI_RESET = "\u001B[0m";
 
+    public Buffer(int MAX_QUEUE,boolean verbose) {
+        this.MAX_QUEUE = MAX_QUEUE;
+        array = new String[MAX_QUEUE];
+        this.verbose = verbose;
+    }
 
-    public int MAX_QUEUE =10;
-    String array[] = new String[MAX_QUEUE];
+    public int MAX_QUEUE;
+    String array[];
+    boolean verbose;
     int index=0;
 
 
     synchronized void  produce(int n ,String val) throws InterruptedException {
+        long start = System.nanoTime();
 
         int free =  MAX_QUEUE-(index+1);
         while(index == MAX_QUEUE-1 || free < n ) {
-            System.out.println(Thread.currentThread()+"PPP");
+            if(verbose)System.out.println(Thread.currentThread()+"PPP");
             wait();
             free =  MAX_QUEUE-(index+1);
         }
-        System.out.println(Thread.currentThread()+"P");
+        if(verbose)System.out.println(Thread.currentThread()+"P");
 
         for(int i=0;i<n;i++){
             sleep(4);
-            System.out.println(ANSI_YELLOW_BACKGROUND +"Producer "+ Thread.currentThread().getName() + " produces <" + val + ">" + (i+1)+"/"+n +ANSI_RESET);
+            if(verbose)System.out.println(ANSI_YELLOW_BACKGROUND +"Producer "+ Thread.currentThread().getName() + " produces <" + val + ">" + (i+1)+"/"+n +ANSI_RESET);
             index++;
             array[index]=val;
         }
 
+        long end = System.nanoTime();
+        prod_time+=(end-start);
+        nprod++;
         notifyAll();
     }
 
 
     synchronized void consume(int n) throws InterruptedException {
+        long start = System.nanoTime();
+
         while(index ==0 || n> index ){
-            System.out.println(Thread.currentThread()+"CCC");
+            if(verbose)System.out.println(Thread.currentThread()+"CCC");
             wait();
         }
-        System.out.println(Thread.currentThread()+"C");
+        if(verbose)System.out.println(Thread.currentThread()+"C");
 
 
         for(int i=0;i<n;i++) {
             sleep(4);
             String val = array[index];
             index--;
-            System.out.println(ANSI_BLUE_BACKGROUND + "Consumer " + Thread.currentThread().getName() + " consumes <" + val + "> "+(i+1)+"/"+n + ANSI_RESET);
+            if(verbose)System.out.println(ANSI_BLUE_BACKGROUND + "Consumer " + Thread.currentThread().getName() + " consumes <" + val + "> "+(i+1)+"/"+n + ANSI_RESET);
         }
 
         notifyAll();
 
-
+        long end = System.nanoTime();
+        cons_time+=(end-start);
+        ncons++;
     }
 
 
