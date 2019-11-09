@@ -15,7 +15,7 @@ public class Mandelbrot extends JFrame  {
 
     private BufferedImage I;
     int nthreads =10;
-    int ntasks=91;
+    int ntasks=1;
 
 
 
@@ -30,42 +30,48 @@ public class Mandelbrot extends JFrame  {
         I = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 
 
-        List<TaskRange> ranges = calculateRanges(getWidth());
-//        ExecutorService pool = Executors.newFixedThreadPool(nthreads);
-//
-//        Set<Future<List<Pixel>>> pixels= new HashSet<>();
-//        for(TaskRange range :ranges){
-//            pixels.add(pool.submit(new Task(this, range)));
-//        }
-//
-//        for(Future<List<Pixel>> pixelArray: pixels){
-//            for(Pixel p: pixelArray.get()){
-////                System.out.println(p.x + " " +p.y);
-//                I.setRGB(p.x, p.y, p.iter | (p.iter << 8));
-//            }
-//        }
+        List<TaskRange> ranges = calculateRanges(getWidth(),ntasks);
+        ExecutorService pool = Executors.newFixedThreadPool(nthreads);
+
+        Set<Future<List<Pixel>>> pixels= new HashSet<>();
+        for(TaskRange range :ranges){
+            pixels.add(pool.submit(new Task(this, range)));
+        }
+
+        for(Future<List<Pixel>> pixelArray: pixels){
+            for(Pixel p: pixelArray.get()){
+//                System.out.println(p.x + " " +p.y);
+                I.setRGB(p.x, p.y, p.iter | (p.iter << 8));
+            }
+        }
 
 
     }
 
-    private List<TaskRange> calculateRanges(int k ){
+    //calculate k buckets on range [0,n)
+    private List<TaskRange> calculateRanges(int n, int k ){
+        if(k>n || k<=0) throw new Error("incorrect bucket size or range");
 
-        int cutStart = 0;
-        double width = ((double) k )/ntasks;
-        System.out.println(width);
-        int cutWidth = (int) Math.ceil(width);
+
+        int minimalBucketSize =n/k;
+        int nWiderBuckets = n%k;
+
         List<TaskRange> ranges = new ArrayList<>();
 
+        int cutStart =0;
         for (int i = 0; i < ntasks; i++) {
+            int cutEnd;
+            if(nWiderBuckets>0){
+                cutEnd = cutStart+minimalBucketSize+1;
+                nWiderBuckets--;
 
-            int cutEnd = cutStart+cutWidth;
-
-
-            if(i == ntasks-1 && cutEnd>k) cutEnd = k;
-
+            }else{
+                cutEnd = cutStart+minimalBucketSize;
+            }
 
             ranges.add(new TaskRange(cutStart,cutEnd));
-            System.out.println(i+" ("+cutStart+","+ cutEnd+")");
+
+            System.out.println(i+" <"+cutStart+","+ cutEnd+")");
 
             cutStart=cutEnd;
 
