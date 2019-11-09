@@ -16,12 +16,14 @@ public class Mandelbrot extends JFrame  {
     private BufferedImage I;
     int nthreads =10;
     int ntasks=1;
+    int MAX_ITER = 570;
 
 
-
-    public Mandelbrot() throws Exception {
+    public Mandelbrot(int nthreads,int ntasks, int MAX_ITER) throws Exception {
         super("Mandelbrot Set");
-
+        this.ntasks = ntasks;
+        this.nthreads=nthreads;
+        this.MAX_ITER=MAX_ITER;
 
 
         setBounds(100, 100, 800, 600);
@@ -71,7 +73,7 @@ public class Mandelbrot extends JFrame  {
 
             ranges.add(new TaskRange(cutStart,cutEnd));
 
-            System.out.println(i+" <"+cutStart+","+ cutEnd+")");
+//            System.out.println(i+" <"+cutStart+","+ cutEnd+")");
 
             cutStart=cutEnd;
 

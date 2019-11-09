@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 public class Task implements Callable {
 
     Mandelbrot mandelbrot;
-    private final int MAX_ITER = 570;
     private final double ZOOM = 150;
     private double zx, zy, cX, cY, tmp;
     TaskRange range;
@@ -23,7 +22,7 @@ public class Task implements Callable {
                 zx = zy = 0;
                 cX = (x - 400) / ZOOM;
                 cY = (y - 300) / ZOOM;
-                int iter = MAX_ITER;
+                int iter = mandelbrot.MAX_ITER;
                 while (zx * zx + zy * zy < 4 && iter > 0) {
                     tmp = zx * zx - zy * zy + cX;
                     zy = 2.0 * zx * zy + cY;
