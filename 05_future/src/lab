@@ -1,0 +1,12 @@
+poola wątków korzystająca z egzekturoa mogą być różne rodzaje nie tylko Fixed, np newWorkStealingPool
+
+zmienna future to jakieś pudełko zmienna na odpoweidz Future<integer> future = pool.submit(callable)
+dodaj pudelko do zbioru pudelek
+
+future.get() funkcja sie blokuje i czeka az w pudelku pojawi sie wynik
+
+
+jak więcej wątków niż rdzeni to powinny sobie nawzajem przeszkadzać
+
+10x więcej zadań niż watków to jest szansa że równomiernie sie porozdziela między wątki
+
