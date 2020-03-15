@@ -1,4 +1,4 @@
-package ex22;
+package ex21;
 
 public class Timer {
     long cons_time = 0;
@@ -21,4 +21,6 @@ public class Timer {
         cons_time+=(end-start);
         ncons++;
     }
+
+
 }

@@ -1,5 +1,7 @@
 package ex21;
 
+
+
 import java.util.Random;
 
 class Consumer extends Thread {
@@ -12,7 +14,7 @@ class Consumer extends Thread {
 
     public void run() {
 
-        for(int i = 0;  i < 10000;   i++) {
+        for(;;) {
             try {
                 buffer.consume(randomNumber());
             } catch (InterruptedException e) {

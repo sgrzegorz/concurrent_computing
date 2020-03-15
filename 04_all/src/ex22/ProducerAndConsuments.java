@@ -34,11 +34,11 @@ public class ProducerAndConsuments {
 
         try { Thread.sleep(10000); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        System.out.println(buffer.timer.prod_time/buffer.timer.nprod);
-        System.out.println( "prod=" +buffer.timer.nprod);
+        System.out.println("Prod\t"+buffer.timer.prod_time/buffer.timer.nprod);
+        //System.out.println( "prod=" +buffer.timer.nprod);
 
-        System.out.println(buffer.timer.cons_time/buffer.timer.ncons);
-        System.out.println("ncons" +buffer.timer.ncons);
+        System.out.println("Cons\t"+buffer.timer.cons_time/buffer.timer.ncons);
+        //System.out.println("ncons" +buffer.timer.ncons);
 
     }
 }

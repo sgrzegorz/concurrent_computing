@@ -1,5 +1,6 @@
 package ex21;
 
+
 import java.util.Random;
 
 class Producer extends Thread {
@@ -17,7 +18,7 @@ class Producer extends Thread {
 
     public void run() {
 
-        for(int i = 0;  i < 10000;   i++) {
+        for(;;) {
             try {
                 synchronized (Producer.class)
                 {

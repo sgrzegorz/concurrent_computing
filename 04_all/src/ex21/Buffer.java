@@ -15,14 +15,16 @@ class Buffer{
         this.verbose = verbose;
     }
 
+
     public int MAX_QUEUE;
     String array[];
     boolean verbose;
     int index=0;
+    Timer timer = new Timer();
 
 
     synchronized void  produce(int n ,String val) throws InterruptedException {
-        long start = System.nanoTime();
+        long start = timer.start();
 
         int free =  MAX_QUEUE-(index+1);
         while(index == MAX_QUEUE-1 || free < n ) {
@@ -33,21 +35,20 @@ class Buffer{
         if(verbose)System.out.println(Thread.currentThread()+"P");
 
         for(int i=0;i<n;i++){
-            sleep(4);
-            if(verbose)System.out.println(ANSI_YELLOW_BACKGROUND +"Producer "+ Thread.currentThread().getName() + " produces <" + val + ">" + (i+1)+"/"+n +ANSI_RESET);
+
+            if(verbose){System.out.println(ANSI_YELLOW_BACKGROUND +"Producer "+ Thread.currentThread().getName() + " produces <" + val + ">" + (i+1)+"/"+n +ANSI_RESET); sleep(4);}
             index++;
             array[index]=val;
         }
 
-        long end = System.nanoTime();
-        prod_time+=(end-start);
-        nprod++;
+
         notifyAll();
+        timer.stopProd(start);
     }
 
 
     synchronized void consume(int n) throws InterruptedException {
-        long start = System.nanoTime();
+        long start = timer.start();
 
         while(index ==0 || n> index ){
             if(verbose)System.out.println(Thread.currentThread()+"CCC");
@@ -57,17 +58,15 @@ class Buffer{
 
 
         for(int i=0;i<n;i++) {
-            sleep(4);
+
             String val = array[index];
             index--;
-            if(verbose)System.out.println(ANSI_BLUE_BACKGROUND + "Consumer " + Thread.currentThread().getName() + " consumes <" + val + "> "+(i+1)+"/"+n + ANSI_RESET);
+            if(verbose){System.out.println(ANSI_BLUE_BACKGROUND + "Consumer " + Thread.currentThread().getName() + " consumes <" + val + "> "+(i+1)+"/"+n + ANSI_RESET);sleep(4);}
         }
 
         notifyAll();
 
-        long end = System.nanoTime();
-        cons_time+=(end-start);
-        ncons++;
+       timer.stopCons(start);
     }
 
 
